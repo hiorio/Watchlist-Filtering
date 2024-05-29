@@ -11,6 +11,7 @@ public class CustService {
     private CustRepository custRepository;
 
     public Cust findByCustId(String custId) {
+        // git 테스트
         return custRepository.findById(custId).orElse(null);
     }
 
