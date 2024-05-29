@@ -1,6 +1,7 @@
 package com.watchlist.batch.reader;
 
 import com.watchlist.model.Watchlist;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.batch.item.ItemReader;
@@ -19,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
+@Slf4j
 public class WatchlistItemReader implements ItemReader<Watchlist> {
 
     private final List<Watchlist> watchlists = new ArrayList<>();
@@ -27,6 +29,10 @@ public class WatchlistItemReader implements ItemReader<Watchlist> {
     public WatchlistItemReader() {
         try {
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+
+            // 파일 다 읽는거 아니고 들어온거 하나만 읽는건데
+            // 파일 형태가 바뀔 수 있으니까 fileReader 같은 인터페이스와 이걸 구현한 xlsx, txt 구현체를 각각 만들어두고
+            // 확장자 바뀔 때마다 구현체만 갈아끼우면 확장성이 있을듯 !!!???
             Resource[] resources = resolver.getResources("classpath:watchlist/*");
             for (Resource resource : resources) {
                 if (resource.getFilename().endsWith(".txt")) {
@@ -36,7 +42,8 @@ public class WatchlistItemReader implements ItemReader<Watchlist> {
                 }
             }
             this.watchlistIterator = watchlists.iterator();
-            System.out.println("WatchlistItemReader initialized with " + watchlists.size() + " items.");
+//            System.out.println("WatchlistItemReader initialized with " + watchlists.size() + " items.");
+            log.info("WatchlistItemReader initialized with {} items.", watchlists.size()); // 로그
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to initialize WatchlistItemReader: " + e.getMessage(), e);
@@ -61,6 +68,7 @@ public class WatchlistItemReader implements ItemReader<Watchlist> {
         while ((line = reader.readLine()) != null) {
             String[] tokens = line.split("\\|\\|\\|");
             if (tokens.length == 3) {
+                // 요것도 setter 쓰지 말고 생성자로 바로 필드 주입
                 Watchlist item = new Watchlist();
                 item.setCustName(tokens[0].trim());
                 item.setBirthday(formatDate(tokens[1].trim()));
@@ -84,6 +92,8 @@ public class WatchlistItemReader implements ItemReader<Watchlist> {
 //            if (row.getRowNum() == 0) {
 //                continue; // skip header row
 //            }
+
+            // 생성자 주입
             Watchlist item = new Watchlist();
             item.setCustName(getCellStringValue(row.getCell(0)));
             item.setBirthday(formatDate(getCellStringValue(row.getCell(1))));

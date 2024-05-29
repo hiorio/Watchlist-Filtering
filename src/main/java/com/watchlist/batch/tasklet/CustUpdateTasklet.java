@@ -27,6 +27,7 @@ public class CustUpdateTasklet implements Tasklet {
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         List<Watchlist> watchlistEntries = watchlistRepository.findAll();
 
+        // 하나씩 디비 안 찌르고 전체 고객 올려서 자바로 필터링 해도 좋을듯
         for (Watchlist watchlist : watchlistEntries) {
             List<Cust> matchingCusts = custRepository.findByCustNameIgnoreCaseAndBirthdayAndNation(
                     watchlist.getCustName().trim(),

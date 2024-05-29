@@ -30,6 +30,16 @@ public class WatchlistFileProcessorTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         Watchlist item;
+
+        // List<Watchlist> items 이게
+        // ItemReader 에서 만들어진 놈을 여기에서도 쓰려고 로컬변수 선언 + while 문 돌면서 add 하는 것 같은데 (??)
+        // List<Watchlist> items = new ArrayList<>(); <- 이 필드를 가지고 있는 컴포넌트를 하나 만들고
+        // ItemReader 랑 여기에서 저 items 를 get 해서 사용하면 싱글톤 지켜짐 + while문 돌 필요 없음
+        // + ItemReader.reader() 랑 이터레이터도 필요 없지 않을까 ? ? ? ?
+
+        // 위처럼 고칠 수 있따면. 사실 reader / processor / writer 도 의미 없어 보임
+        // tasklet 말고 chunk step 으로 만든다면 그나마 의미 있을 것 같은데 너무 귀찮을 것 같다 . . .,,!!
+
         List<Watchlist> items = new ArrayList<>();
         while ((item = itemReader.read()) != null) {
 //            System.out.println("Reading item: " + item);
