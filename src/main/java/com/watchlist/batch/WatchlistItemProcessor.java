@@ -13,6 +13,7 @@ public class WatchlistItemProcessor implements ItemProcessor<Watchlist, Watchlis
 
     @Override
     public Watchlist process(Watchlist item) throws Exception {
+        // 이미 파일 읽어올때 formatDate 했는데 왜 또 하나욤 ? ?
         item.setBirthday(formatDate(item.getBirthday()));
         return item;
     }
