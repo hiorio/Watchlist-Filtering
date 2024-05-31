@@ -33,9 +33,7 @@ public class WatchlistApplication implements CommandLineRunner {
     private JobRepository jobRepository;
 
     public static void main(String[] args) {
-        logger.info("Starting WatchlistApplication...");
         SpringApplication.run(WatchlistApplication.class, args);
-        logger.info("WatchlistApplication started successfully.");
     }
 
     @Override

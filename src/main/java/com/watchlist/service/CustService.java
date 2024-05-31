@@ -2,13 +2,16 @@ package com.watchlist.service;
 
 import com.watchlist.model.Cust;
 import com.watchlist.repository.CustRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustService {
-    @Autowired
-    private CustRepository custRepository;
+
+    private final CustRepository custRepository;
+
+    public CustService(CustRepository custRepository) {
+        this.custRepository = custRepository;
+    }
 
     public Cust findByCustId(String custId) {
         return custRepository.findById(custId).orElse(null);

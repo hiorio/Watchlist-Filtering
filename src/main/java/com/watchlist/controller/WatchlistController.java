@@ -1,15 +1,17 @@
 package com.watchlist.controller;
 
 import com.watchlist.service.CustService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/watchlist")
 public class WatchlistController {
 
-    @Autowired
-    private CustService custService;
+    private final CustService custService;
+
+    public WatchlistController(CustService custService) {
+        this.custService = custService;
+    }
 
     @GetMapping("/status/{custId}")
     public String getWatchlistStatus(@PathVariable String custId) {
