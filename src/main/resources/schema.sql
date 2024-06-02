@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS watchlist;
+USE watchlist;
+
 CREATE TABLE IF NOT EXISTS CUST (
                                     CUST_ID VARCHAR(10) PRIMARY KEY,
                                     CUST_NAME VARCHAR(50),

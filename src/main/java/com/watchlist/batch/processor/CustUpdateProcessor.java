@@ -30,6 +30,7 @@ public class CustUpdateProcessor implements ItemProcessor<Watchlist, Cust> {
         if (!matchingCusts.isEmpty()) {
             Cust cust = matchingCusts.get(0);
             cust.setWlfYn("Y");
+            cust.setWlfDvCd("00");
             logger.info("Processed cust item: {}", cust);
             return cust;
         }
